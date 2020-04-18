@@ -18,8 +18,7 @@
 // TODO: Implement an API.
 // TODO: Allow files of other content-types to be served.
 
-use actix_web::{get, middleware, App, HttpResponse, HttpServer, HttpRequest};
-use actix_service::Service;
+use actix_web::{get, middleware, App, HttpResponse, HttpServer};
 use bytes::Bytes;
 use futures::stream::iter;
 use futures::StreamExt;
@@ -31,9 +30,9 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "actix_web=info");
     env_logger::init();
 
-    HttpServer::new(|| App::new().service(home).wrap_fn(|req, srv| {
+    HttpServer::new(|| App::new().service(home)/*.wrap_fn(|req, srv| {
         srv.call(req)
-    }).wrap(middleware::Logger::default()))
+    })*/.wrap(middleware::Logger::default()))
         .bind("127.0.0.1:8080")?
         .run()
         .await
@@ -41,7 +40,7 @@ async fn main() -> std::io::Result<()> {
 
 #[get("/")]
 fn home() -> HttpResponse {
-    let content = fs::read("file.mp3").unwrap();
+    let content = fs::read("a.mp3").unwrap();
     let body = iter::repeat(Bytes::from(content));
 
     HttpResponse::Ok()
