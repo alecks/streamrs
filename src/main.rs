@@ -23,7 +23,6 @@ use bytes::Bytes;
 use futures::stream::iter;
 use futures::StreamExt;
 use std::fs;
-use std::iter;
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -41,7 +40,7 @@ async fn main() -> std::io::Result<()> {
 #[get("/")]
 fn home() -> HttpResponse {
     let content = fs::read("a.mp3").unwrap();
-    let body = iter::repeat(Bytes::from(content));
+    let body = std::iter::repeat(Bytes::from(content));
 
     HttpResponse::Ok()
         .content_type("audio/mpeg")
