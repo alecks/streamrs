@@ -24,6 +24,8 @@ use futures::stream::iter;
 use futures::StreamExt;
 use std::fs;
 
+static API_PATH: &str = "/api/v1";
+
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "actix_web=info");
